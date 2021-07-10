@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\CategoriesController;
-use Facade\FlareClient\View;
+use App\Http\Controllers\Admin\CategoriesController;
+use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return View('welcome');
+    return view('welcome');
 });
-Route::get('admin/categories', [CategoriesController::class, 'index']);
+
+Route::get('/admin/categories', 'Admin\CategoriesController@index')->name('categories.index'); // before laravel 8 => this method require to activate namespace property in route service provider.
+Route::get('/admin/categories/create', [CategoriesController::class, 'create'])->name('categories.create'); // in laravel 8 [class name, method name] to call a method in another class.
+Route::post('/admin/categories', [CategoriesController::class, 'store'])->name('categories.store');
+Route::get('/admin/categories/{id}', [CategoriesController::class, 'show'])->name('categories.show');
+Route::get('/admin/categories/{id}/edit', [CategoriesController::class, 'edit'])->name('categories.edit');
+Route::put('/admin/categories/{id}', [CategoriesController::class, 'update'])->name('categories.update');
+Route::delete('/admin/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+
+// Route::resource('/admin/categories', 'Admin\CategoriesController');
